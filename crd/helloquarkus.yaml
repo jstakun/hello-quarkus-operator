@@ -5,6 +5,6 @@ metadata:
 spec:
   replicas: 2
   version: "0.2"
-  ingressHost: hello-quarkus.apps.cluster-d52d.d52d.example.opentlc.com
+  ingressHost: hello-quarkus.apps.crc.testing
   greetingSuffix: "from Quarkus"
   
