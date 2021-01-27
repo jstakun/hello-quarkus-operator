@@ -1,0 +1,26 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: ""
+spec:
+  selector:
+    matchLabels:
+      app: ""
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ""
+    spec:
+      containers:
+      - name: hello-quarkus
+        image:
+        ports:
+        - containerPort: 8080
+#        volumeMounts:
+#       - name: html-volume
+#          mountPath: /usr/share/nginx/html
+#      volumes:
+#      - name: html-volume
+#        configMap:
+#          name: ""

@@ -1,0 +1,29 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: helloquarkus.operator.waw.redhat.pl
+spec:
+  group: operator.waw.redhat.pl
+  version: v1
+  scope: Namespaced
+  names:
+    plural: helloquarkus
+    singular: helloquarkus
+    kind: HelloQuarkus
+    shortNames:
+      - hq
+  validation:
+    openAPIV3Schema:
+      type: object
+      properties:
+        spec:
+          type: object
+          properties:
+            replicas:
+              type: integer
+            greetingSuffix:
+              type: string
+            version:
+              type: string
+            ingressHost:
+              type: string     

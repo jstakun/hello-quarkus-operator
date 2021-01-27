@@ -1,0 +1,10 @@
+apiVersion: "operator.waw.redhat.pl/v1"
+kind: HelloQuarkus
+metadata:
+  name: my-hello-quarkus
+spec:
+  replicas: 2
+  version: "0.2"
+  ingressHost: hello-quarkus.apps.cluster-d52d.d52d.example.opentlc.com
+  greetingSuffix: "from Quarkus"
+  
