@@ -1,0 +1,41 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hello-quarkus-operator
+rules:
+  - apiGroups:
+      - operator.waw.redhat.pl
+    resources:
+      - helloquarkus
+    verbs: ["get", "list", "update","watch"]
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs: ["get", "list", "watch"]
+  - apiGroups:
+      - "apps"
+    resources:      
+      - deployments
+    verbs: ["get", "list", "create", "update", "patch", "delete"] 
+  - apiGroups:
+      - ""
+    resources:      
+      - services
+    verbs: ["get", "list", "create", "update", "patch", "delete"] 
+  - apiGroups:
+      - "networking.k8s.io"
+    resources:      
+      - ingresses
+    verbs: ["get", "list", "create", "update", "patch", "delete"] 
+  - apiGroups:
+      - "extensions"
+    resources:      
+      - ingresses
+    verbs: ["get", "list", "create", "update", "patch", "delete"] 
+  - apiGroups:
+      - "route.openshift.io"
+    resources:      
+      - routes
+      - routes/custom-host
+    verbs: ["get", "list", "create", "update", "patch", "delete"] 

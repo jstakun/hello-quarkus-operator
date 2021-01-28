@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hello-quarkus-operator-admin
+subjects:
+- kind: ServiceAccount
+  name: hello-quarkus-operator
+  namespace: hello-quarkus-operator
+roleRef:
+  kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hello-quarkus-operator-admin
+subjects:
+- kind: ServiceAccount
+  name: hello-quarkus-operator
+  namespace: hello-quarkus-operator
+roleRef:
+  kind: ClusterRole
+  name: hello-quarkus-operator
+  apiGroup: ""
+  
