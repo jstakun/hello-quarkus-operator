@@ -32,6 +32,7 @@ rules:
       - "extensions"
     resources:      
       - ingresses
+      - deplpyments
     verbs: ["get", "list", "create", "update", "patch", "delete"] 
   - apiGroups:
       - "route.openshift.io"
