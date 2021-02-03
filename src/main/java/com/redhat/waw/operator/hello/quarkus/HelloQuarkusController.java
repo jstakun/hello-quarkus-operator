@@ -72,7 +72,9 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
 	    deployment.getMetadata().setNamespace(ns);
 	    deployment.getMetadata().getLabels().put("app", deploymentName(helloQuarkusInst));
 	    
-	    deployment.getSpec().setReplicas(replicas); 
+	    deployment.getMetadata().getLabels().put("app", deploymentName(helloQuarkusInst));
+	    
+	    deployment.getSpec().getSelector().getMatchLabels().put("app", deploymentName(helloQuarkusInst));
 	    
 	    deployment
 	        .getSpec()

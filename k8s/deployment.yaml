@@ -17,7 +17,7 @@ spec:
       serviceAccount: hello-quarkus-operator
       containers:
       - name: operator
-        image: quay.io/jstakun/hello-quarkus-operator:0.1
+        image: quay.io/jstakun/hello-quarkus-operator:0.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
