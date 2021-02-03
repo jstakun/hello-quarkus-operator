@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.redhat.waw</groupId>
   <artifactId>hello-quarkus-operator</artifactId>
-  <version>0.1</version>
+  <version>0.2</version>
   
    <properties>
         <java.version>11</java.version>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>io.javaoperatorsdk</groupId>
       <artifactId>operator-framework-quarkus-extension</artifactId>
-      <version>1.7.0</version>
+      <version>1.7.1</version>
     </dependency>
     <dependency>
             <groupId>org.apache.logging.log4j</groupId>

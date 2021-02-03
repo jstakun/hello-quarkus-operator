@@ -17,14 +17,8 @@ public class HelloQuarkusOperator implements QuarkusApplication {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	@Inject KubernetesClient client;
-
 	@Inject Operator operator;
-
-	@Inject ConfigurationService configuration;
-
-	@Inject HelloQuarkusController controller;
-
+	
 	public static void main(String... args) {
 		//TODO check if crd exists and if not create it
 		//TODO check if operator runs in openshift or kubernetes mode and initiate appropriate KubernetesClient 
@@ -33,10 +27,8 @@ public class HelloQuarkusOperator implements QuarkusApplication {
 	  
 	@Override
 	public int run(String... args) throws Exception {
-		log.info("Connecting to Kubernetes using: " + client.getClass().getName());
-		final var config = configuration.getConfigurationFor(controller);
-	    log.info("CR class: " + config.getCustomResourceClass());
-	    Quarkus.waitForExit();
+		operator.start();
+		Quarkus.waitForExit();
 	    return 0;
 	}
 }

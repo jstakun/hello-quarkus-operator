@@ -1,7 +1,9 @@
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: 
+  name: ""
+  labels:
+    app: "" 
 spec:
   rules:
     - host: 

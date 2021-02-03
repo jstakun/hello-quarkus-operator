@@ -4,6 +4,12 @@ metadata:
   name: hello-quarkus-operator
 rules:
   - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - get  
+  - apiGroups:
       - operator.waw.redhat.pl
     resources:
       - helloquarkus
@@ -32,7 +38,7 @@ rules:
       - "extensions"
     resources:      
       - ingresses
-      - deplpyments
+      - deployments
     verbs: ["get", "list", "create", "update", "patch", "delete"] 
   - apiGroups:
       - "route.openshift.io"

@@ -66,12 +66,14 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
         }
         
 		//init kubernetes/openshift objects
-		
+        
 		Deployment deployment = loadYaml(Deployment.class, "deployment.yaml");
 	    deployment.getMetadata().setName(deploymentName(helloQuarkusInst));
 	    deployment.getMetadata().setNamespace(ns);
-	    deployment.getSpec().getSelector().getMatchLabels().put("app", deploymentName(helloQuarkusInst));
-	   
+	    deployment.getMetadata().getLabels().put("app", deploymentName(helloQuarkusInst));
+	    
+	    deployment.getSpec().setReplicas(replicas); 
+	    
 	    deployment
 	        .getSpec()
 	        .getTemplate()
@@ -94,13 +96,12 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
 	    	throw new RuntimeException("Deployment has no container definition! Please add one...");
 	    }
 	    
-	    deployment.getSpec().setReplicas(replicas); 
-	    
 	    Service service = loadYaml(Service.class, "service.yaml");
 	    service.getMetadata().setName(serviceName(helloQuarkusInst));
 	    service.getMetadata().setNamespace(ns);
 	    service.getSpec().setSelector(deployment.getSpec().getTemplate().getMetadata().getLabels());
-
+        service.getMetadata().getLabels().put("app", deploymentName(helloQuarkusInst));
+	    
 	    Ingress ingress = null;
 	    Route route = null;
 	    boolean newHost = false;
@@ -110,6 +111,7 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
 	    		route = loadYaml(Route.class, "route.yaml");
 	    		route.getMetadata().setName(ingressName(helloQuarkusInst));
 	    		route.getMetadata().setNamespace(ns);   
+	    		route.getMetadata().getLabels().put("app", deploymentName(helloQuarkusInst));
 	    		if (!StringUtils.equals(route.getSpec().getHost(), ingressHost)) {
 	    			route.getSpec().setHost(ingressHost);
 	    			newHost = true;
@@ -118,7 +120,8 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
 	    		ingress = loadYaml(Ingress.class, "ingress.yaml");
 	    		ingress.getMetadata().setName(ingressName(helloQuarkusInst));
 	    		ingress.getMetadata().setNamespace(ns);
-	    
+	    		ingress.getMetadata().getLabels().put("app", deploymentName(helloQuarkusInst));
+	    		
 	    		ingress.getSpec().
 	    			getRules().get(0).
 	    			getHttp().
@@ -186,7 +189,11 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
 		            .inNamespace(ns)
 		            .withName(deploymentName(helloQuarkusInst));
 		 if (deployment.get() != null) {
-		      deployment.withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+			  try {
+				  deployment.withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+			  } catch (Exception e) {
+				   log.error("Error deleting deployment " + deploymentName(helloQuarkusInst), e);
+			  }
 		 }
 
 		 log.info("Deleting Service {}", serviceName(helloQuarkusInst));
@@ -196,7 +203,11 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
 		            .inNamespace(ns)
 		            .withName(serviceName(helloQuarkusInst));
 		 if (service.get() != null) {
-		     service.delete();
+		     try {
+		    	 service.delete();
+		     } catch (Exception e) {
+				   log.error("Error deleting service " + serviceName(helloQuarkusInst), e);
+			 }
 		 }
 		 
 		 if (kubernetesClient instanceof DefaultOpenShiftClient) {
@@ -208,7 +219,11 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
 		            .inNamespace(ns)
 		            .withName(ingressName(helloQuarkusInst));
 		    if (route.get() != null) {
-		    	route.delete();
+		    	try {
+		    		route.delete();
+		    	} catch (Exception e) {
+					log.error("Error deleting route " + ingressName(helloQuarkusInst), e);
+		    	}
 		    }
 		 } else {
 			 log.info("Deleting Ingress {}", ingressName(helloQuarkusInst));
@@ -219,7 +234,11 @@ public class HelloQuarkusController implements ResourceController<HelloQuarkus> 
 			            .inNamespace(ns)
 			            .withName(ingressName(helloQuarkusInst));
 			 if (ingress.get() != null) {
-			     ingress.delete();
+			     try {
+			    	 ingress.delete();
+			     } catch (Exception e) {
+					 log.error("Error deleting ingress " + ingressName(helloQuarkusInst), e);
+			     }
 			 } 
 		 }
 		    
